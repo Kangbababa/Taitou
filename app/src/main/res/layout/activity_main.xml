@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~    Copyright (C) 2017 MINDORKS NEXTGEN PRIVATE LIMITED
+  ~
+  ~    Licensed under the Apache License, Version 2.0 (the "License");
+  ~    you may not use this file except in compliance with the License.
+  ~    You may obtain a copy of the License at
+  ~
+  ~        http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~    Unless required by applicable law or agreed to in writing, software
+  ~    distributed under the License is distributed on an "AS IS" BASIS,
+  ~    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~    See the License for the specific language governing permissions and
+  ~    limitations under the License.
+  -->
+
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.leon.taitou.MainActivity">
+
+    <com.flurgle.camerakit.CameraView xmlns:camerakit="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/cameraView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        camerakit:ckFocus="continuous"
+        camerakit:ckCropOutput="true"
+        android:adjustViewBounds="true" />
+
+    <TableLayout  android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent"  android:layout_marginTop="50dp">
+        <TableRow
+            android:id="@+id/Nav_row"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            >
+
+
+
+
+
+
+
+        </TableRow>
+
+    <TableRow
+        android:id="@+id/good_row"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        >
+    <TextView
+        android:id="@+id/goodpos"
+        android:text="@string/good_pos"
+        android:textAlignment="center"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:layout_weight="1"/>
+    <TextView
+        android:id="@+id/goodpos_prob"
+        android:textSize="18sp"
+        android:layout_weight="1"/>
+    </TableRow>
+
+
+    <TableRow
+        android:id="@+id/left_row"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        >
+    <TextView
+        android:id="@+id/leftpos"
+        android:text="@string/left_pos"
+        android:textAlignment="center"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:layout_weight="1"/>
+    <TextView
+        android:id="@+id/leftpos_prob"
+        android:textSize="18sp"
+        android:layout_weight="1"/>
+    </TableRow>
+
+    <TableRow
+        android:id="@+id/right_row"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        >
+    <TextView
+        android:id="@+id/rightpos"
+        android:text="@string/right_pos"
+        android:textAlignment="center"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:layout_weight="1"/>
+    <TextView
+        android:id="@+id/rightpos_prob"
+        android:textSize="18sp"
+        android:layout_weight="1"/>
+    </TableRow>
+
+    <TableRow
+        android:id="@+id/down_row"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        >
+    <TextView
+        android:id="@+id/downpos"
+        android:text="@string/down_pos"
+        android:textAlignment="center"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:layout_weight="1"/>
+    <TextView
+        android:id="@+id/downpos_prob"
+        android:textSize="18sp"
+        android:layout_weight="1"/>
+    </TableRow>
+
+    <TableRow
+        android:id="@+id/up_row"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        >
+    <TextView
+        android:id="@+id/uppos"
+        android:text="@string/up_pos"
+        android:textAlignment="center"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:layout_weight="1"/>
+    <TextView
+        android:id="@+id/uppos_prob"
+        android:textSize="18sp"
+        android:layout_weight="1"/>
+    </TableRow>
+
+    </TableLayout>
+    <Button
+        android:id="@+id/btnToggleCamera"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_gravity="bottom|center"
+        android:layout_marginBottom="20dp"
+        android:text="@string/toggle_camera"
+        android:textAllCaps="false"
+        android:textColor="@android:color/black" />
+   <!-- <Button
+        android:background="#00000000"
+        android:id="@+id/btnSetting"
+        android:drawableLeft="@drawable/setting"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+    /> -->
+</FrameLayout>
