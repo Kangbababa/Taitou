@@ -62,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
     private static final int INPUT_SIZE=227;
     private static final float IMAGE_STD = 255;
     private int[] intValues=new int[227*227];
+    boolean btnflag= true;
 
     private Executor executor = Executors.newSingleThreadExecutor();
 
@@ -129,7 +130,17 @@ public class MainActivity extends AppCompatActivity {
              @Override
              public void onClick(View v) {
                  //cameraView.captureImage();
-                 StartMonintor();
+                 if(btnflag){
+                     btnflag = false;
+                     StopMonintor();
+                     btnCapture.setText("Start Capture");
+                 }
+                 else {
+                     btnflag =true;
+                     StartMonintor();
+                     btnCapture.setText("Stop Capture");
+                 }
+
              }
          });
 
@@ -240,6 +251,9 @@ public class MainActivity extends AppCompatActivity {
         };
         //开始一个定时任务
         mTimer.schedule(mTimerTask, 0, 10000);
+
+    }
+    private  void  StopMonintor(){
 
     }
 
