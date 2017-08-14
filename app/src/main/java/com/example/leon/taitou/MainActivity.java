@@ -32,6 +32,7 @@ import java.util.TimerTask;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import android.media.MediaPlayer;
+import android.util.Log;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -54,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
     private TimerTask mTimerTask;
     private int count=0;
     private static boolean alert=false;
-    private static  boolean preAlert=true;
+    private static  int historyAlert=0;
 
     private static float[] floatValues=new float[227*227*3];
     private ActivityInference activityInference;
@@ -62,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
     private static final int INPUT_SIZE=227;
     private static final float IMAGE_STD = 255;
     private int[] intValues=new int[227*227];
-    boolean btnflag= true;
+    boolean btnflag= false;
 
     private Executor executor = Executors.newSingleThreadExecutor();
 
@@ -91,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
        //}
        // });
 
-        mPlayer = MediaPlayer.create(this, R.raw.hello);
+        mPlayer = MediaPlayer.create(this, R.raw.tip);
 
         cameraView.setCameraListener(new CameraListener() {
             @Override
@@ -196,14 +197,65 @@ public class MainActivity extends AppCompatActivity {
          downposTextView.setText(Float.toString(results[3]));
          upposTextView.setText(Float.toString(results[4]));
 
-        if(BadPosition(results) & preAlert) {
-            alert=true;
+        if(BadPosition(results)){
+        historyAlert++;
         }
-        else{
-            alert=false;
-        }
-        preAlert=alert;
     }
+
+    private  void  StartMonintor(){
+        //持续60秒，间隔3秒，采集1帧，如果左或下，则语音提醒；
+        //语音提醒5分钟后，重新监测
+        mTimer = new Timer();
+        mTimerTask = new TimerTask() {
+            @Override
+            public void run() {
+                count++;
+                if(!alert)
+                {
+                    cameraView.captureImage();
+
+                }
+                if (count % 6 == 0)//60秒一直不正
+                {
+
+                    if(historyAlert==5){
+                        mPlayer.start();
+                        alert=true;
+
+                    }
+                    historyAlert=0;
+                }
+                if((count % 30==0) & (alert))  //提醒后5分钟恢复采集
+                {alert=false;}
+            }
+        };
+        //开始一个定时任务
+        mTimer.schedule(mTimerTask, 0, 10000);
+
+    }
+    private  boolean BadPosition(float[] floatArray) {
+        //最大是1 or 3项
+        boolean  badflag=false;
+        if(maxValue(floatArray,1) || maxValue(floatArray,3) ) {
+            badflag=true;
+        }
+        else {
+            badflag= false;
+        }
+        return badflag;
+    }
+    private boolean maxValue(float[] floatArray,int pos) {
+        boolean maxflag=true;
+        for (int i=0;i<floatArray.length;++i) {
+
+            if (floatArray[pos]-floatArray[i] < 0) {
+                maxflag=false;
+                break;
+            }
+        }
+        return maxflag;
+    }
+
     public static Bitmap ImageCrop(Bitmap bitmap) {
         int w = bitmap.getWidth();
         int h = bitmap.getHeight();
@@ -225,49 +277,10 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private  void  StartMonintor(){
-        //持续60秒，间隔3秒，采集1帧，如果左或下，则语音提醒；
-        //语音提醒5分钟后，重新监测
-        mTimer = new Timer();
-        mTimerTask = new TimerTask() {
-            @Override
-            public void run() {
-                count++;
-                if(!alert)
-                {
-                    cameraView.captureImage();
 
-                }
-                if (count % 6 == 0)//60秒一直不正
-                {
-
-                    if(alert)   mPlayer.start();
-                    preAlert=true;
-
-                }
-                if((count % 30==0) & (alert))  //提醒后5分钟恢复采集
-                {alert=false;}
-            }
-        };
-        //开始一个定时任务
-        mTimer.schedule(mTimerTask, 0, 10000);
-
-    }
     private  void  StopMonintor(){
-
+       mTimer.cancel();
     }
 
-    private  boolean BadPosition(float[] floatArray) {
-        //最大是1 or 3项
-        if(maxValue(floatArray,1) | maxValue(floatArray,3) )
-        return true;
-        else return  false;
-    }
-    private boolean maxValue(float[] floatArray,int pos) {
-        for (int i=0;i<=floatArray.length;i++) {
-            if (floatArray[pos]-floatArray[i]<=0){return false;}
-        }
-       return true;
-    }
 
 }
