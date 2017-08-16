@@ -26,6 +26,8 @@ import android.widget.TextView;
 import com.flurgle.camerakit.CameraListener;
 import com.flurgle.camerakit.CameraView;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -33,6 +35,8 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import android.media.MediaPlayer;
 import android.util.Log;
+
+import android.content.res.AssetManager;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -98,8 +102,23 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onPictureTaken(byte[] picture) {
                 super.onPictureTaken(picture);
+                //load from assets bmp file ，floatvalue is different with python load
+                //byte[] b = null;
 
-                //Bitmap bitmap = BitmapFactory.decodeByteArray(picture, 0, picture.length);
+                //try {
+                //    AssetManager am = getResources().getAssets();
+                //    InputStream is = am.open("1-1.jpeg");
+                //    int size = is.available();
+                //        b = new byte[size];
+                //        // 读取数据
+                //        is.read(b);
+                //        is.close();
+                //} catch (IOException e) {
+                //    e.printStackTrace();
+                //}
+
+                //Bitmap bitmap = BitmapFactory.decodeByteArray(b, 0, b.length);
+
                 Bitmap bitmap = BitmapFactory.decodeByteArray(picture, 0, picture.length);
                 bitmap=ImageCrop(bitmap);
                 bitmap = Bitmap.createScaledBitmap(bitmap, INPUT_SIZE, INPUT_SIZE, false);
