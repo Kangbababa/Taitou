@@ -157,6 +157,11 @@ public class MainActivity extends AppCompatActivity {
                  }
                  else {
                      btnflag =true;
+
+                     alert=false;
+                     historyAlert=0;
+                     count=0;
+                     
                      StartMonintor();
                      btnCapture.setText("Stop Capture");
                  }
@@ -237,7 +242,7 @@ public class MainActivity extends AppCompatActivity {
                 if (count % 6 == 0)//60秒一直不正
                 {
 
-                    if(historyAlert==5){
+                    if(historyAlert >= 5){
                         mPlayer.start();
                         alert=true;
 
