@@ -135,6 +135,23 @@
         android:layout_weight="1"/>
     </TableRow>
 
+        <TableRow
+            android:id="@+id/imagepercent_row"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            >
+            <TextView
+                android:id="@+id/imagepercent"
+                android:text="@string/imagepercent"
+                android:textAlignment="center"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:layout_weight="1"/>
+            <TextView
+                android:id="@+id/imgpercent_prob"
+                android:textSize="18sp"
+                android:layout_weight="1"/>
+        </TableRow>
     </TableLayout>
     <Button
         android:id="@+id/btnToggleCamera"
