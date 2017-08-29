@@ -130,19 +130,21 @@ public class MainActivity extends AppCompatActivity {
 
                 Bitmap resizebitmap = Bitmap.createScaledBitmap(bitmap, INPUT_SIZE, INPUT_SIZE, false);
                 //find diff with current pic and previous pic
-                // to find wether child is there when  difference is more then 0.4
-                if (prePic==null){prePic=resizebitmap;}
-                double imgDiff=ImgDiffPercent(resizebitmap);
+                // to find wether the kid is there when  difference  percent is more then 0.4
+                Bitmap  grayBmp= gray2Binary(resizebitmap);
+                if (prePic==null){prePic=grayBmp;}
+                double imgDiff=ImgDiffPercent(grayBmp);
                 if(imgDiff>=0.4){
                 //alert child is there?//
                     mPlayerThere.start();
                     }
                 else{
-                   prePic=resizebitmap;
+                   prePic=grayBmp;
                 }
 
                 //3D array to 1D array
                 resizebitmap.getPixels(intValues, 0, resizebitmap.getWidth(), 0, 0, resizebitmap.getWidth(), resizebitmap.getHeight());
+                //grayBmp.getPixels(intValues, 0, grayBmp.getWidth(), 0, 0, grayBmp.getWidth(), grayBmp.getHeight());
                 for (int i = 0; i < intValues.length; ++i) {
                     final int val = intValues[i];
                     floatValues[i * 3 + 0] = (((val >> 16) & 0xFF) - IMAGE_MEAN) / IMAGE_STD;
@@ -339,6 +341,45 @@ public class MainActivity extends AppCompatActivity {
         //System.out.println("diff percent: " + (p * 100.0));
         return diff / n / 255.0;
     }
+    public Bitmap gray2Binary(Bitmap grayBmp) {
+
+        grayBmp=Bitmap.createScaledBitmap(grayBmp, 20, 20, false);
+        //得到图形的宽度和长度
+        int width = grayBmp.getWidth();
+        int height = grayBmp.getHeight();
+        //创建二值化图像
+        Bitmap binarymap = null;
+        binarymap = grayBmp.copy(Bitmap.Config.ARGB_8888, true);
+        //依次循环，对图像的像素进行处理
+        for (int i = 0; i < width; i++) {
+            for (int j = 0; j < height; j++) {
+                //得到当前像素的值
+                int col = binarymap.getPixel(i, j);
+                //得到alpha通道的值
+                int alpha = col & 0xFF000000;
+                //得到图像的像素RGB的值
+                int red = (col & 0x00FF0000) >> 16;
+                int green = (col & 0x0000FF00) >> 8;
+                int blue = (col & 0x000000FF);
+                // 用公式X = 0.3×R+0.59×G+0.11×B计算出X代替原来的RGB
+                int gray = (int) ((float) red * 0.3 + (float) green * 0.59 + (float) blue * 0.11);
+                //对图像进行二值化处理
+                if (gray <= 95) {
+                    gray = 0;
+                } else {
+                    gray = 255;
+                }
+                // 新的ARGB
+                int newColor = alpha | (gray << 16) | (gray << 8) | gray;
+                //设置新图像的当前像素值
+                binarymap.setPixel(i, j, newColor);
+            }
+        }
+        return binarymap;
+    }
+
+
+
     private void makeButtonVisible() {
         runOnUiThread(new Runnable() {
             @Override
