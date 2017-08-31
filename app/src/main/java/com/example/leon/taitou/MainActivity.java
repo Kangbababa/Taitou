@@ -22,6 +22,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.ImageView;
 
 import com.flurgle.camerakit.CameraListener;
 import com.flurgle.camerakit.CameraView;
@@ -54,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView imagePercentView;
     private Button btnCapture;
     private Button btnSetting;
+
     private MediaPlayer mPlayerTip,mPlayerThere;
     private Timer mTimer;
     private TimerTask mTimerTask;
@@ -102,6 +104,7 @@ public class MainActivity extends AppCompatActivity {
         mPlayerTip = MediaPlayer.create(this, R.raw.tip);
         mPlayerThere=MediaPlayer.create(this, R.raw.isthere);
 
+
         cameraView.setCameraListener(new CameraListener() {
             @Override
             public void onPictureTaken(byte[] picture) {
@@ -134,13 +137,12 @@ public class MainActivity extends AppCompatActivity {
                 Bitmap  grayBmp= gray2Binary(resizebitmap);
                 if (prePic==null){prePic=grayBmp;}
                 double imgDiff=ImgDiffPercent(grayBmp);
+
                 if(imgDiff>=0.4){
                 //alert child is there?//
                     mPlayerThere.start();
                     }
-                else{
-                   prePic=grayBmp;
-                }
+                prePic=grayBmp;
 
                 //3D array to 1D array
                 resizebitmap.getPixels(intValues, 0, resizebitmap.getWidth(), 0, 0, resizebitmap.getWidth(), resizebitmap.getHeight());

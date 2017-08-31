@@ -28,15 +28,21 @@
         camerakit:ckFocus="continuous"
         camerakit:ckCropOutput="true"
         android:adjustViewBounds="true" />
+    <ImageView
+             android:id="@+id/backimageview"
+        android:layout_marginTop="80dp"
+             android:layout_width="match_parent"
+             android:layout_height="200dp"
 
-    <TableLayout  android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent"  android:layout_marginTop="50dp">
+
+             android:scaleType="fitCenter"
+             android:src="@drawable/back" />
+    <TableLayout  android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent"  android:layout_marginTop="300dp">
         <TableRow
             android:id="@+id/Nav_row"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             >
-
-
 
 
 
