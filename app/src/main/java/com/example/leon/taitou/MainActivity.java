@@ -88,18 +88,18 @@ public class MainActivity extends AppCompatActivity {
         imagePercentView= (TextView) findViewById(R.id.imgpercent_prob);
 
         btnCapture = (Button) findViewById(R.id.btnToggleCamera);
-        // btnSetting = (Button)findViewById(R.id.btnSetting);
+        btnSetting = (Button)findViewById(R.id.btnSetting);
 
-        // btnSetting.setOnClickListener(new OnClickListener(){
-        //     @Override
-        //     public void onClick(View v) {
-        //         // TODO Auto-generated method stub
+         btnSetting.setOnClickListener(new OnClickListener(){
+             @Override
+             public void onClick(View v) {
+                 // TODO Auto-generated method stub
         //         //textView.setText("Welcome!!");
-        //         Intent intent = new Intent();
-        //         intent.setClass(MainActivity.this, SettingActivity.class);
-        //         startActivity(intent);
-        //}
-        // });
+                Intent intent = new Intent();
+                 intent.setClass(MainActivity.this, SettingActivity.class);
+                 startActivity(intent);
+        }
+         });
 
         mPlayerTip = MediaPlayer.create(this, R.raw.tip);
         mPlayerThere=MediaPlayer.create(this, R.raw.isthere);

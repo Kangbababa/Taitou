@@ -30,11 +30,9 @@
         android:adjustViewBounds="true" />
     <ImageView
              android:id="@+id/backimageview"
-        android:layout_marginTop="80dp"
+             android:layout_marginTop="80dp"
              android:layout_width="match_parent"
              android:layout_height="200dp"
-
-
              android:scaleType="fitCenter"
              android:src="@drawable/back" />
     <TableLayout  android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent"  android:layout_marginTop="300dp">
@@ -43,11 +41,6 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             >
-
-
-
-
-
         </TableRow>
 
     <TableRow
@@ -168,11 +161,11 @@
         android:text="@string/toggle_camera"
         android:textAllCaps="false"
         android:textColor="@android:color/black" />
-   <!-- <Button
+   <Button
         android:background="#00000000"
         android:id="@+id/btnSetting"
-        android:drawableLeft="@drawable/setting"
+        android:drawableLeft="@drawable/setting1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-    /> -->
+    />
 </FrameLayout>
