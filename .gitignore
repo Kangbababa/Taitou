@@ -1,9 +1,16 @@
-*.iml
-.gradle
-/local.properties
+/build
+/build/
+build/
+/captures
 /.idea/workspace.xml
 /.idea/libraries
+*.iml
+.gradle
 .DS_Store
-/build
-/captures
 .externalNativeBuild
+.idea/
+.arcconfig
+
+# Local configuration file (sdk path, etc)
+local.properties
+/local.properties

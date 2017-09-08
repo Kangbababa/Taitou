@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView upposTextView;
     private TextView imagePercentView;
     private Button btnCapture;
-    private Button btnSetting;
+    private ImageView btnSetting;
 
     private MediaPlayer mPlayerTip,mPlayerThere;
     private Timer mTimer;
@@ -88,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
         imagePercentView= (TextView) findViewById(R.id.imgpercent_prob);
 
         btnCapture = (Button) findViewById(R.id.btnToggleCamera);
-        btnSetting = (Button)findViewById(R.id.btnSetting);
+        btnSetting = (ImageView)findViewById(R.id.btnSetting);
 
          btnSetting.setOnClickListener(new OnClickListener(){
              @Override
@@ -177,7 +177,7 @@ public class MainActivity extends AppCompatActivity {
                 if (btnflag) {
                     btnflag = false;
                     StopMonintor();
-                    btnCapture.setText("Start Capture");
+                    btnCapture.setText(R.string.toggle_camera_start);
                 } else {
                     btnflag = true;
 
@@ -186,7 +186,7 @@ public class MainActivity extends AppCompatActivity {
                     count = 0;
 
                     StartMonintor();
-                    btnCapture.setText("Stop Capture");
+                    btnCapture.setText(R.string.toggle_camera_stop);
                 }
 
             }

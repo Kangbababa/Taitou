@@ -6,7 +6,8 @@
     <string name="right_pos">Right:</string>
     <string name="down_pos">Down:</string>
     <string name="up_pos">Up:</string>
-    <string name="toggle_camera">Capture Camera</string>
+    <string name="toggle_camera_start">Start</string>
+    <string name="toggle_camera_stop">Stop</string>
     <string name="detect_object">Detect Object</string>
     <string name="title_activity_settings">Settings</string>
     <string name="imagepercent">Kid Leave:</string>
