@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="com.example.leon.taitou.SettingActivity">
 
     <android.support.design.widget.AppBarLayout
@@ -21,7 +22,84 @@
 
     </android.support.design.widget.AppBarLayout>
 
+    <LinearLayout android:id="@+id/setting_rise_hint"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:gravity="center|left"
+            android:paddingLeft="24dp"
+            android:text="抬头提醒"
+            android:textColor="@color/color_b"
+            android:textSize="16dp" />
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@color/color_g2" />¬
+    </LinearLayout>
 
-</android.support.design.widget.CoordinatorLayout>
+    <LinearLayout android:id="@+id/setting_leave_hint"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:gravity="center|left"
+            android:paddingLeft="24dp"
+            android:text="离开提醒"
+            android:textColor="@color/color_b"
+            android:textSize="16dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@color/color_g2" />
+    </LinearLayout>
+
+    <LinearLayout android:id="@+id/setting_feedback_hint"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:gravity="center|left"
+            android:paddingLeft="24dp"
+            android:text="帮助与反馈"
+            android:textColor="@color/color_b"
+            android:textSize="16dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@color/color_g2" />
+    </LinearLayout>
+
+    <LinearLayout android:id="@+id/setting_about_hint"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:gravity="center|left"
+            android:paddingLeft="24dp"
+            android:text="关于抬头"
+            android:textColor="@color/color_b"
+            android:textSize="16dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@color/color_g2" />
+    </LinearLayout>
+
+</LinearLayout>
