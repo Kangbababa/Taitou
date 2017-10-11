@@ -1,16 +1,18 @@
 <resources>
-    <string name="app_name">Taitou</string>
+    <string name="app_name">抬头</string>
     <string name="action_settings">Settings</string>
-    <string name="good_pos">Good:</string>
-    <string name="left_pos">Left:</string>
-    <string name="right_pos">Right:</string>
-    <string name="down_pos">Down:</string>
-    <string name="up_pos">Up:</string>
-    <string name="toggle_camera_start">Start</string>
-    <string name="toggle_camera_stop">Stop</string>
+    <string name="good_pos">正:</string>
+    <string name="left_pos">左:</string>
+    <string name="right_pos">右:</string>
+    <string name="down_pos">趴:</string>
+    <string name="up_pos">站:</string>
+    <string name="toggle_camera_start">开始</string>
+    <string name="toggle_camera_stop">停止</string>
     <string name="detect_object">Detect Object</string>
     <string name="title_activity_settings">Settings</string>
-    <string name="imagepercent">Kid Leave:</string>
+    <string name="imagepercent">离开:</string>
+    <!-- list 到了最底部 没有新数据了-->
+    <string name="save_net_mode">save_net_mode</string>
     <!-- Strings related to Settings -->
 
     <!-- Example General settings -->
@@ -25,15 +27,15 @@
     <string name="pref_default_display_name">John Smith</string>
 
     <string name="pref_title_add_friends_to_messages">Add friends to messages</string>
-    <string-array name="pref_example_list_titles">
-        <item>Always</item>
-        <item>When possible</item>
-        <item>Never</item>
+    <string-array name="pref_list_titles">
+        <item>白峻豪抬头-爸爸严厉版</item>
+        <item>小弟抬头-姐姐温柔版</item>
+        <item>乖宝宝抬头-妈妈版</item>
     </string-array>
-    <string-array name="pref_example_list_values">
-        <item>1</item>
-        <item>0</item>
-        <item>-1</item>
+    <string-array name="pref_list_values">
+        <item>tip</item>
+        <item>tip1</item>
+        <item>tip2</item>
     </string-array>
 
     <!-- Example settings for Data & Sync -->
@@ -82,5 +84,5 @@
     <string name="pref_ringtone_silent">Silent</string>
 
     <string name="pref_title_vibrate">Vibrate</string>
-    <string name="title_activity_setting">SettingActivity</string>
+    <string name="title_activity_setting">设置</string>
 </resources>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?><!--最新栏目的新闻-->
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout="@layout/preference_item"
+    android:title="@string/title_activity_setting">
+
+<PreferenceCategory
+    android:layout="@layout/preference_category_widget"
+    android:title="基本设置">
+    <ListPreference
+        android:layout="@layout/preference_item"
+        android:entries="@array/pref_list_titles"
+        android:entryValues="@array/pref_list_values"
+        android:summary="当发现姿势不好时，给出语音提醒"
+        android:key="alert_tip_list"
+        android:title="设定抬头提示音" />
+    <Preference
+        android:layout="@layout/preference_item"
+        android:summary="当发现孩子可能离开时，给出语音提醒"
+        android:title="设定离开提示音" />
+</PreferenceCategory>
+
+<PreferenceCategory
+    android:layout="@layout/preference_category_widget"
+    android:title="其他说明">
+    <Preference
+        android:layout="@layout/preference_item"
+        android:summary="V 1.0"
+        android:title="当前版本" />
+    <Preference
+        android:layout="@layout/preference_item"
+        android:summary="
+        在开展这个公益项目过程中，得到了家人、朋友，许多志愿者的大力帮助，在此深表感谢！ 他（她）们是： 康康爸爸，康康妈妈，白峻豪（9岁），赵云峰，朱翊，林谡，章懿...欢迎你加入Taitou公益项目，可发送邮件至974591189@qq.com加入我们的志愿者大家庭!"
+        android:title="致谢" />
+</PreferenceCategory>
+
+</PreferenceScreen>

@@ -27,21 +27,20 @@ import android.widget.ImageView;
 import com.flurgle.camerakit.CameraListener;
 import com.flurgle.camerakit.CameraView;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import android.media.MediaPlayer;
-import android.util.Log;
 
-import android.content.res.AssetManager;
+import com.orhanobut.logger.Logger;
 
-import android.app.Activity;
+
 import android.content.Intent;
 import android.view.View.OnClickListener;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -93,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
          btnSetting.setOnClickListener(new OnClickListener(){
              @Override
              public void onClick(View v) {
-                 // TODO Auto-generated method stub
+                // TODO Auto-generated method stub
         //         //textView.setText("Welcome!!");
                 Intent intent = new Intent();
                  intent.setClass(MainActivity.this, SettingActivity.class);
@@ -103,6 +102,7 @@ public class MainActivity extends AppCompatActivity {
 
         mPlayerTip = MediaPlayer.create(this, R.raw.tip);
         mPlayerThere=MediaPlayer.create(this, R.raw.isthere);
+
 
 
         cameraView.setCameraListener(new CameraListener() {
@@ -253,15 +253,17 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void StartMonintor() {
-        //持续60秒，间隔3秒，采集1帧，如果左或下，则语音提醒；
+        //持续60秒，间隔10秒，采集1帧，如果左或下，则语音提醒；
         //语音提醒5分钟后，重新监测
         mTimer = new Timer();
+        GetSettingInfo();
         mTimerTask = new TimerTask() {
             @Override
             public void run() {
                 count++;
                 if (!alert) {
                     cameraView.captureImage();
+
 
                 }
                 if (count % 6 == 0)//60秒一直不正
@@ -306,6 +308,24 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         return maxflag;
+    }
+    private void GetSettingInfo() {
+
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        String alert_listPref = sharedPref.getString("alert_tip_list", "");
+        Logger.d("Pref " + alert_listPref);
+        switch(alert_listPref){
+            case "tip":
+                mPlayerTip = MediaPlayer.create(this, R.raw.tip);
+                break;
+            case "tip1":
+                mPlayerTip = MediaPlayer.create(this, R.raw.isthere);
+                break;
+            case "tip2":
+                mPlayerTip = MediaPlayer.create(this, R.raw.tip);
+                break;
+        }
+
     }
 
     public static Bitmap ImageCrop(Bitmap bitmap) {

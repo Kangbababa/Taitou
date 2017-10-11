@@ -37,5 +37,6 @@ dependencies {
     compile 'com.flurgle:camerakit:0.9.13'
     compile 'com.android.support:support-v4:26.+'
     compile 'com.android.support:support-vector-drawable:26.+'
+    compile 'com.orhanobut:logger:1.15'
     testCompile 'junit:junit:4.12'
 }
