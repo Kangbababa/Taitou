@@ -13,7 +13,7 @@ public class ActivityInference {
 
     private static ActivityInference activityInferenceInstance;
     private TensorFlowInferenceInterface inferenceInterface;
-    private static final String MODEL_FILE = "file:///android_asset/shrink_graph.pb";
+    private static final String MODEL_FILE = "file:///android_asset/fixed_frozen_har.pb";
     private static final String INPUT_NODE = "in/X";
     private static final String[] OUTPUT_NODES = {"out/Softmax:0"};
     private static final String OUTPUT_NODE = "out/Softmax:0";
