@@ -4,7 +4,7 @@
 使用了机器学习技术，不断使用，可以更好的匹配孩子的坐姿特点。矫正坐姿，达到近视眼预防的目的。
 
 
-Android应用下载地址：https://github.com/Kangbababa/Taitou/blob/master/app/Taitou.apk
+Android应用下载地址：https://github.com/Kangbababa/Taitou/blob/master/app/app-release.apk
 
 在开展这个公益项目过程中，得到了家人、朋友，许多志愿者的大力帮助，在此深表感谢！
 他（她）们是：
