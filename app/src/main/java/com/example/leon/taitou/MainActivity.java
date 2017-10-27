@@ -19,6 +19,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -27,6 +28,7 @@ import android.widget.ImageView;
 import com.flurgle.camerakit.CameraListener;
 import com.flurgle.camerakit.CameraView;
 
+import java.io.File;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.Executor;
@@ -40,9 +42,18 @@ import android.content.Intent;
 import android.view.View.OnClickListener;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import java.util.HashMap;
+import java.util.Map;
+import android.os.Handler;
+import android.os.Message;
+import com.example.leon.taitou.UploadUtil.OnUploadProcessListener;
 
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.net.wifi.WifiManager;
+import android.content.Context;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements OnUploadProcessListener{
 
 
     private CameraView cameraView;
@@ -70,6 +81,30 @@ public class MainActivity extends AppCompatActivity {
     private static final float IMAGE_STD = 255;
     private int[] intValues = new int[227 * 227];
     boolean btnflag = false;
+    private static String requestURL = "http://wipos.cn/iface/body/upload.na";
+    private String picPath = null;
+    private static final String TAG = "uploadImage";
+
+    /**
+     * 去上传文件
+     */
+    protected static final int TO_UPLOAD_FILE = 1;
+    /**
+     * 上传文件响应
+     */
+    protected static final int UPLOAD_FILE_DONE = 2;  //
+    /**
+     * 选择文件
+     */
+    public static final int TO_SELECT_PHOTO = 3;
+    /**
+     * 上传初始化
+     */
+    private static final int UPLOAD_INIT_PROCESS = 4;
+    /**
+     * 上传中
+     */
+    private static final int UPLOAD_IN_PROCESS = 5;
 
     private Executor executor = Executors.newSingleThreadExecutor();
 
@@ -88,6 +123,8 @@ public class MainActivity extends AppCompatActivity {
 
         btnCapture = (Button) findViewById(R.id.btnToggleCamera);
         btnSetting = (ImageView)findViewById(R.id.btnSetting);
+
+
 
          btnSetting.setOnClickListener(new OnClickListener(){
              @Override
@@ -137,24 +174,25 @@ public class MainActivity extends AppCompatActivity {
                 Bitmap  grayBmp= gray2Binary(resizebitmap);
                 if (prePic==null){prePic=grayBmp;}
                 double imgDiff=ImgDiffPercent(grayBmp);
-
-                if(imgDiff>=0.4){
-                //alert child is there?//
-                    mPlayerThere.start();
+                //same bmp threw out
+                if(imgDiff>=0.02) {
+                    if (imgDiff >= 0.4) {
+                        //alert child is there?//
+                        mPlayerThere.start();
                     }
-                prePic=grayBmp;
+                    prePic = grayBmp;
 
-                //3D array to 1D array
-                resizebitmap.getPixels(intValues, 0, resizebitmap.getWidth(), 0, 0, resizebitmap.getWidth(), resizebitmap.getHeight());
-                //grayBmp.getPixels(intValues, 0, grayBmp.getWidth(), 0, 0, grayBmp.getWidth(), grayBmp.getHeight());
-                for (int i = 0; i < intValues.length; ++i) {
-                    final int val = intValues[i];
-                    floatValues[i * 3 + 0] = (((val >> 16) & 0xFF) - IMAGE_MEAN) / IMAGE_STD;
-                    floatValues[i * 3 + 1] = (((val >> 8) & 0xFF) - IMAGE_MEAN) / IMAGE_STD;
-                    floatValues[i * 3 + 2] = ((val & 0xFF) - IMAGE_MEAN) / IMAGE_STD;
+                    //3D array to 1D array
+                    resizebitmap.getPixels(intValues, 0, resizebitmap.getWidth(), 0, 0, resizebitmap.getWidth(), resizebitmap.getHeight());
+                    //grayBmp.getPixels(intValues, 0, grayBmp.getWidth(), 0, 0, grayBmp.getWidth(), grayBmp.getHeight());
+                    for (int i = 0; i < intValues.length; ++i) {
+                        final int val = intValues[i];
+                        floatValues[i * 3 + 0] = (((val >> 16) & 0xFF) - IMAGE_MEAN) / IMAGE_STD;
+                        floatValues[i * 3 + 1] = (((val >> 8) & 0xFF) - IMAGE_MEAN) / IMAGE_STD;
+                        floatValues[i * 3 + 2] = ((val & 0xFF) - IMAGE_MEAN) / IMAGE_STD;
+                    }
+                    activityPrediction(imgDiff, bitmap);
                 }
-                activityPrediction(imgDiff);
-
 
             }
 
@@ -234,7 +272,77 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void activityPrediction(double imgPercent) {
+
+
+
+
+
+
+
+
+    @Override
+    public void onUploadDone(int responseCode, String message) {
+
+        Message msg = Message.obtain();
+        msg.what = UPLOAD_FILE_DONE;
+        msg.arg1 = responseCode;
+        msg.obj = message;
+        handler.sendMessage(msg);
+    }
+
+
+    private Handler handler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case TO_UPLOAD_FILE:
+                    toUploadFile();
+                    break;
+
+                case UPLOAD_INIT_PROCESS:
+                    break;
+                case UPLOAD_IN_PROCESS:
+                    break;
+                case UPLOAD_FILE_DONE:
+                    //String result = "响应码："+msg.arg1+"\n响应信息："+msg.obj+"\n耗时："+UploadUtil.getRequestTime()+"秒";
+                    Log.e(TAG,"UPLOAD_FILE_DONE响应码："+msg.arg1+"\n响应信息："+msg.obj+"\n耗时："+UploadUtil.getRequestTime()+"秒");
+                    if (msg.arg1 == 1) {
+                        //del local file
+                        String filename=findFileName(msg.obj.toString());
+                        Log.e(TAG,"filename="+filename);
+                        SDCardHelper.removeFileFromSDCard("/storage/emulated/0/Android/data/com.example.leon.taitou/cache/"+filename);
+
+                    }
+
+                    break;
+                default:
+                    break;
+            }
+            super.handleMessage(msg);
+        }
+
+    };
+
+    @Override
+    public void onUploadProcess(int uploadSize) {
+        Message msg = Message.obtain();
+        msg.what = UPLOAD_IN_PROCESS;
+        msg.arg1 = uploadSize;
+        handler.sendMessage(msg );
+
+    }
+
+    @Override
+    public void initUpload(int fileSize) {
+        Message msg = Message.obtain();
+        msg.what = UPLOAD_INIT_PROCESS;
+        msg.arg1 = fileSize;
+        handler.sendMessage(msg );
+
+    }
+
+
+    private void activityPrediction(double imgPercent,Bitmap bitmap) {
 
 
         // Perform inference using Tensorflow
@@ -247,11 +355,56 @@ public class MainActivity extends AppCompatActivity {
         upposTextView.setText(Float.toString(results[4]));
         imagePercentView.setText(Double.toString(imgPercent));
 
+        //if results max<0.8,Save the bmp to sd card private file
+        //Logger.d("size " +SDCardHelper.getSDCardFreeSize());
+        if(SDCardHelper.getSDCardFreeSize()>=200) {
+            if(GetMaxResult(results)<=0.8) {
+                Logger.d("saveBitmapToSDCardPrivateCacheDir ");
+                SDCardHelper.saveBitmapToSDCardPrivateCacheDir(bitmap, SDCardHelper.genFileName(), this.getApplicationContext());
+            }
+
+
+        }
+
+
         if (BadPosition(results)) {
             historyAlert++;
         }
     }
 
+    private float GetMaxResult(float[] arr){
+        float max = arr[0];
+        for (int i = 1; i < arr.length; i++) {
+            if (arr[i] > max) {
+                max = arr[i];
+            }
+        }
+
+        return max;
+
+    }
+
+    private void toUploadFile()
+    {
+
+        String fileKey = "imgFile";
+        //picPath="/storage/emulated/0/Android/data/com.example.leon.taitou/cache/20171024193351.JPEG";
+        UploadUtil uploadUtil = UploadUtil.getInstance();;
+        uploadUtil.setOnUploadProcessListener(this);  //设置监听器监听上传状态
+
+        Map<String, String> params = new HashMap<String, String>();
+        //params.put("orderId", picPath);
+        //uploadUtil.uploadFile( picPath,fileKey, requestURL,params);
+
+        File[] files = new File(SDCardHelper.getSDCardPrivateCacheDir(this.getApplicationContext())).listFiles();
+
+        for (File file : files) {
+            Logger.d("filepath:" +file.getPath()+"filename:"+file.getName());
+            params.put("orderId", file.getPath());
+            uploadUtil.uploadFile( file.getPath(),fileKey, requestURL,params);
+        }
+
+    }
     private void StartMonintor() {
         //持续60秒，间隔10秒，采集1帧，如果左或下，则语音提醒；
         //语音提醒5分钟后，重新监测
@@ -271,6 +424,9 @@ public class MainActivity extends AppCompatActivity {
 
                     if (historyAlert >= 5) {
                         mPlayerTip.start();
+
+                            handler.sendEmptyMessage(TO_UPLOAD_FILE);
+
                         alert = true;
 
                     }
@@ -363,6 +519,20 @@ public class MainActivity extends AppCompatActivity {
         //System.out.println("diff percent: " + (p * 100.0));
         return diff / n / 255.0;
     }
+    private String findFileName(String inputStr){
+        String[] sArray=inputStr.split(",");
+        String filename=null;
+        for(int i=0;i<sArray.length;i++)
+        {
+            if(sArray[i].contains("oldFileNames")) {
+                Logger.d(TAG,"oldFilenames"+sArray[i]);
+                filename=sArray[i].substring(16,sArray[i].length()-1);
+                break;
+            }
+        }
+        return filename;
+
+    }
     public Bitmap gray2Binary(Bitmap grayBmp) {
 
         grayBmp=Bitmap.createScaledBitmap(grayBmp, 20, 20, false);
@@ -398,6 +568,83 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         return binarymap;
+    }
+    /**
+     * 判断移动网络是否开启
+     *
+     * @param context
+     * @return
+     */
+    public  boolean isNetEnabled(Context context) {
+        ConnectivityManager connectivityManager = (ConnectivityManager) context
+                .getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (connectivityManager == null) {
+        } else {
+            NetworkInfo[] networkInfo = connectivityManager.getAllNetworkInfo();
+            if (networkInfo != null&&networkInfo.length>0) {
+                for (int i = 0; i < networkInfo.length; i++) {
+                    if (networkInfo[i].getState() == NetworkInfo.State.CONNECTED) {
+                        Logger.d("移动网络已经开启");
+                        return true;
+                    }
+                }
+            }
+        }
+        Logger.d("移动网络还未开启");
+        return false;
+    }
+
+    /**
+     * 判断WIFI网络是否开启
+     *
+     * @param context
+     * @return
+     */
+    public  boolean isWifiEnabled(Context context) {
+        WifiManager wm = (WifiManager) context
+                .getSystemService(Context.WIFI_SERVICE);
+        if (wm != null && wm.isWifiEnabled()) {
+            Logger.d(TAG, "Wifi网络已经开启");
+            return true;
+        }
+        Logger.d(TAG, "Wifi网络还未开启");
+        return false;
+    }
+
+    /**
+     * 判断移动网络是否连接成功
+     *
+     * @param context
+     * @return
+     */
+    public  boolean isNetContected(Context context) {
+        ConnectivityManager cm = (ConnectivityManager) context
+                .getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo info = cm.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
+        if (cm != null && info != null && info.isConnected()) {
+            Logger.d( "移动网络连接成功");
+            return true;
+        }
+        Logger.d("移动网络连接失败");
+        return false;
+    }
+
+    /**
+     * 判断WIFI是否连接成功
+     *
+     * @param context
+     * @return
+     */
+    public  boolean isWifiContected(Context context) {
+        ConnectivityManager cm = (ConnectivityManager) context
+                .getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo info = cm.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+        if (info != null && info.isConnected()) {
+            Logger.d(TAG, "Wifi网络连接成功");
+            return true;
+        }
+        Logger.d(TAG, "Wifi网络连接失败");
+        return false;
     }
 
 

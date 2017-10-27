@@ -8,6 +8,11 @@
 <PreferenceCategory
     android:layout="@layout/preference_category_widget"
     android:title="基本设置">
+    <CheckBoxPreference
+        android:layout="@layout/preference_item"
+        android:defaultValue="true"
+        android:summary="仅在Wi-Fi环境下上传"
+        android:title="上传模式" />
     <ListPreference
         android:layout="@layout/preference_item"
         android:entries="@array/pref_list_titles"
