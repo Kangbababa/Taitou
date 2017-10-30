@@ -5,96 +5,16 @@
     android:fitsSystemWindows="true"
     android:orientation="vertical">
 
+    <!--Toolbar-->
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar_preference"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        android:minHeight="?attr/actionBarSize" />
+
     <FrameLayout
         android:id="@+id/content_frame"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-    <android.support.v7.widget.Toolbar
-            android:id="@+id/setting_toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-             />
-<!--
-    <LinearLayout android:id="@+id/setting_rise_hint"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:gravity="center|left"
-            android:paddingLeft="24dp"
-            android:text="抬头提醒"
-            android:textColor="@color/color_b"
-            android:textSize="16dp" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="1px"
-            android:background="@color/color_g2" />¬
-    </LinearLayout>
-
-    <LinearLayout android:id="@+id/setting_leave_hint"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:gravity="center|left"
-            android:paddingLeft="24dp"
-            android:text="离开提醒"
-            android:textColor="@color/color_b"
-            android:textSize="16dp" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="1px"
-            android:background="@color/color_g2" />
-    </LinearLayout>
-
-    <LinearLayout android:id="@+id/setting_feedback_hint"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:gravity="center|left"
-            android:paddingLeft="24dp"
-            android:text="帮助与反馈"
-            android:textColor="@color/color_b"
-            android:textSize="16dp" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="1px"
-            android:background="@color/color_g2" />
-    </LinearLayout>
-
-    <LinearLayout android:id="@+id/setting_about_hint"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:gravity="center|left"
-            android:paddingLeft="24dp"
-            android:text="关于抬头"
-            android:textColor="@color/color_b"
-            android:textSize="16dp" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="1px"
-            android:background="@color/color_g2" />
-    </LinearLayout>
-!-->
-
-    </LinearLayout>
+        android:layout_height="match_parent" />
+</LinearLayout>

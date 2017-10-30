@@ -25,8 +25,11 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.ImageView;
 
+
 import com.flurgle.camerakit.CameraListener;
 import com.flurgle.camerakit.CameraView;
+import com.flurgle.camerakit.Facing;
+
 
 import java.io.File;
 import java.util.Timer;
@@ -65,6 +68,7 @@ public class MainActivity extends AppCompatActivity implements OnUploadProcessLi
     private TextView imagePercentView;
     private Button btnCapture;
     private ImageView btnSetting;
+    private ImageView btnCamera_change;
 
     private MediaPlayer mPlayerTip,mPlayerThere;
     private Timer mTimer;
@@ -81,6 +85,7 @@ public class MainActivity extends AppCompatActivity implements OnUploadProcessLi
     private static final float IMAGE_STD = 255;
     private int[] intValues = new int[227 * 227];
     boolean btnflag = false;
+    private int camera_change=0;
     private static String requestURL = "http://wipos.cn/iface/body/upload.na";
     private String picPath = null;
     private static final String TAG = "uploadImage";
@@ -123,7 +128,7 @@ public class MainActivity extends AppCompatActivity implements OnUploadProcessLi
 
         btnCapture = (Button) findViewById(R.id.btnToggleCamera);
         btnSetting = (ImageView)findViewById(R.id.btnSetting);
-
+        btnCamera_change=(ImageView)findViewById(R.id.camera_change);
 
 
          btnSetting.setOnClickListener(new OnClickListener(){
@@ -131,11 +136,32 @@ public class MainActivity extends AppCompatActivity implements OnUploadProcessLi
              public void onClick(View v) {
                 // TODO Auto-generated method stub
         //         //textView.setText("Welcome!!");
+                 if (mTimer!=null) {
+                     btnflag=true;
+                     StartStop();
+                 }
+
                 Intent intent = new Intent();
                  intent.setClass(MainActivity.this, SettingActivity.class);
                  startActivity(intent);
         }
          });
+
+        btnCamera_change.setOnClickListener(new OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                //         //textView.setText("Welcome!!");
+                if(camera_change==0){
+                    cameraView.setFacing(1);
+                    camera_change=1;
+                }else{
+                    cameraView.setFacing(0);
+                    camera_change=0;
+                }
+
+            }
+        });
 
         mPlayerTip = MediaPlayer.create(this, R.raw.tip);
         mPlayerThere=MediaPlayer.create(this, R.raw.isthere);
@@ -212,20 +238,7 @@ public class MainActivity extends AppCompatActivity implements OnUploadProcessLi
             @Override
             public void onClick(View v) {
                 //cameraView.captureImage();
-                if (btnflag) {
-                    btnflag = false;
-                    StopMonintor();
-                    btnCapture.setText(R.string.toggle_camera_start);
-                } else {
-                    btnflag = true;
-
-                    alert = false;
-                    historyAlert = 0;
-                    count = 0;
-
-                    StartMonintor();
-                    btnCapture.setText(R.string.toggle_camera_stop);
-                }
+                StartStop();
 
             }
         });
@@ -234,7 +247,23 @@ public class MainActivity extends AppCompatActivity implements OnUploadProcessLi
         initTensorFlowAndLoadModel();
 
     }
+    private void StartStop(){
+        if (btnflag) {
+            btnflag = false;
+            StopMonintor();
+            btnCapture.setText(R.string.toggle_camera_start);
+        } else {
+            btnflag = true;
 
+            alert = false;
+            historyAlert = 0;
+            count = 0;
+
+            StartMonintor();
+            btnCapture.setText(R.string.toggle_camera_stop);
+        }
+
+    }
     private void initTensorFlowAndLoadModel() {
         executor.execute(new Runnable() {
             @Override
@@ -425,7 +454,7 @@ public class MainActivity extends AppCompatActivity implements OnUploadProcessLi
                     if (historyAlert >= 5) {
                         mPlayerTip.start();
 
-                            handler.sendEmptyMessage(TO_UPLOAD_FILE);
+                        handler.sendEmptyMessage(TO_UPLOAD_FILE);
 
                         alert = true;
 

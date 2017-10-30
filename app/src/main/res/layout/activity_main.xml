@@ -27,7 +27,8 @@
         android:layout_height="wrap_content"
         android:adjustViewBounds="true"
         camerakit:ckCropOutput="true"
-        camerakit:ckFocus="continuous" />
+        camerakit:ckFocus="continuous"
+        camerakit:ckZoom="pinch"/>
 
     <ImageView
         android:id="@+id/backimageview"
