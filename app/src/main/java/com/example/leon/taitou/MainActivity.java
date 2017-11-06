@@ -28,7 +28,7 @@ import android.widget.ImageView;
 
 import com.flurgle.camerakit.CameraListener;
 import com.flurgle.camerakit.CameraView;
-import com.flurgle.camerakit.Facing;
+import java.math.BigDecimal;
 
 
 import java.io.File;
@@ -89,6 +89,7 @@ public class MainActivity extends AppCompatActivity implements OnUploadProcessLi
     private static String requestURL = "http://wipos.cn/iface/body/upload.na";
     private String picPath = null;
     private static final String TAG = "uploadImage";
+    private static boolean leaveAlert=true;
 
     /**
      * 去上传文件
@@ -204,7 +205,9 @@ public class MainActivity extends AppCompatActivity implements OnUploadProcessLi
                 if(imgDiff>=0.02) {
                     if (imgDiff >= 0.4) {
                         //alert child is there?//
-                        mPlayerThere.start();
+                        if(leaveAlert) {
+                            mPlayerThere.start();
+                        }
                     }
                     prePic = grayBmp;
 
@@ -377,12 +380,12 @@ public class MainActivity extends AppCompatActivity implements OnUploadProcessLi
         // Perform inference using Tensorflow
         float[] results = activityInference.getActivityProb(floatValues);
 
-        goodposTextView.setText(Float.toString(results[0]));
-        leftposTextView.setText(Float.toString(results[1]));
-        rightposTextView.setText(Float.toString(results[2]));
-        downposTextView.setText(Float.toString(results[3]));
-        upposTextView.setText(Float.toString(results[4]));
-        imagePercentView.setText(Double.toString(imgPercent));
+        goodposTextView.setText(Float.toString(round(results[0],3)));
+        leftposTextView.setText(Float.toString(round(results[1],3)));
+        rightposTextView.setText(Float.toString(round(results[2],3)));
+        downposTextView.setText(Float.toString(round(results[3],3)));
+        upposTextView.setText(Float.toString(round(results[4],3)));
+        imagePercentView.setText(Float.toString(round((float)imgPercent,3)));
 
         //if results max<0.8,Save the bmp to sd card private file
         //Logger.d("size " +SDCardHelper.getSDCardFreeSize());
@@ -498,18 +501,28 @@ public class MainActivity extends AppCompatActivity implements OnUploadProcessLi
 
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
         String alert_listPref = sharedPref.getString("alert_tip_list", "");
-        Logger.d("Pref " + alert_listPref);
+        Logger.d("Pref aler_list:" + alert_listPref);
         switch(alert_listPref){
             case "tip":
                 mPlayerTip = MediaPlayer.create(this, R.raw.tip);
                 break;
-            case "tip1":
-                mPlayerTip = MediaPlayer.create(this, R.raw.isthere);
+            case "dabao":
+                mPlayerTip = MediaPlayer.create(this, R.raw.dabao);
                 break;
-            case "tip2":
-                mPlayerTip = MediaPlayer.create(this, R.raw.tip);
+            case "xiaojie":
+                mPlayerTip = MediaPlayer.create(this, R.raw.xiaojie);
                 break;
+            case "xiaobao":
+                mPlayerTip = MediaPlayer.create(this, R.raw.xiaobao);
+                break;
+            default:
+                mPlayerTip = MediaPlayer.create(this, R.raw.xiaobao);
         }
+        boolean check_leavep=sharedPref.getBoolean("check_Leave", true);
+        boolean check_WiFip=sharedPref.getBoolean("check_WiFi", true);
+        leaveAlert=check_leavep;
+        Logger.d("Pref checkleave:" + check_leavep);
+        Logger.d("Pref check_WiFi:" + check_WiFip);
 
     }
 
@@ -525,6 +538,11 @@ public class MainActivity extends AppCompatActivity implements OnUploadProcessLi
         return Bitmap.createBitmap(bitmap, retX, retY, wh, wh, null, false);
     }
 
+    private static float round(float d, int decimalPlace) {
+        BigDecimal bd = new BigDecimal(Float.toString(d));
+        bd = bd.setScale(decimalPlace, BigDecimal.ROUND_HALF_UP);
+        return bd.floatValue();
+    }
     private double ImgDiffPercent(Bitmap pic) {
 
         long diff = 0;

@@ -30,12 +30,14 @@
     <string-array name="pref_list_titles">
         <item>白峻豪抬头-爸爸严厉版</item>
         <item>小弟抬头-姐姐温柔版</item>
-        <item>乖宝宝抬头-妈妈版</item>
+        <item>大宝抬头-妈妈版</item>
+        <item>小宝贝抬头-童声版</item>
     </string-array>
     <string-array name="pref_list_values">
         <item>tip</item>
-        <item>tip1</item>
-        <item>tip2</item>
+        <item>xiaojie</item>
+        <item>dabao</item>
+        <item>xiaobao</item>
     </string-array>
 
     <!-- Example settings for Data & Sync -->

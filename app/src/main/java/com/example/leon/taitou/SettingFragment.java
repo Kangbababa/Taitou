@@ -41,6 +41,8 @@ public class SettingFragment extends PreferenceFragment {
                     ListPreference tip_lp=(ListPreference) findPreference("alert_tip_list");
                     tip_lp.setSummary(tip_lp.getEntry());
                 }
+
+
             }
         };
 
