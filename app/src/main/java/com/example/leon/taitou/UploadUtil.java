@@ -187,7 +187,7 @@ public class UploadUtil {
             sb.append(PREFIX).append(BOUNDARY).append(LINE_END);
             sb.append("Content-Disposition:form-data; name=\"" + fileKey
                     + "\"; filename=\"" + file.getName() + "\"" + LINE_END);
-            sb.append("Content-Type:image/pjpeg" + LINE_END); // 这里配置的Content-type很重要的 ，用于服务器端辨别文件的类型的
+            sb.append("Content-Type:image/jpeg" + LINE_END); // 这里配置的Content-type很重要的 ，用于服务器端辨别文件的类型的
             sb.append(LINE_END);
             params = sb.toString();
             sb = null;
